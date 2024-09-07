@@ -133,10 +133,12 @@ export default {
 		return maxId + 1;
 		},
 		updateManagerInfo() {
-			if(this.selectedCustomer) {
-				this.selectedManager = this.managerData.find(
-					manager => manager.m_id === this.selectedCustomer.m_id
-				);
+			// 선택된 고객의 관리자 업데이트
+			if (this.selectedCustomerId) {
+				const customer = this.customerData.find(customer => customer.cus_id === this.selectedCustomerId);
+				if (customer) {
+					this.selectedManager = this.managerData.find(manager => manager.m_id === customer.m_id);
+				}
 			}
 		},
 		showNewCustomerModal() { //신규 고객 모달을 열고 새로운 고객 데이터 초기화
@@ -221,20 +223,20 @@ export default {
 			if(day < 10) day = '0' + day;
 			return year + '-' + month + '-' + day;
 		},
+		modify() {
+			this.originalCustomer = { ...this.selectedCustomer };
+			this.$nextTick(() => {
+			// 포커스를 '고객명' 필드로 이동
+			this.$refs.nameVal.focus();
+		});
+			this.isReadOnly = false; // 입력 필드를 수정 가능하도록 변경
+			this.flagValue = false; //관리자 정보도 변경 가능
+		},
 		registration(event) {
 			event.preventDefault();
-			// 유효성 검사 로직을 여기에 추가합니다.
-			// 예: 이메일 형식 검사, 필수 입력 확인 등
 			this.errors = {name: false, jumin: false, email: false, tel: false, phone: false, job: false}; //오류 초기화
 			const { nameVal, juminVal, emailVal, telVal, phoneVal, jobVal, addrVal } = this.$refs;
-			this.modifyName = this.$refs.nameVal.value;
-			this.modifyJumin = this.$refs.juminVal.value;
-			this.modifyemail = this.$refs.emailVal.value;
-			this.modifytel = this.$refs.telVal.value;
-			this.modifyphone = this.$refs.phoneVal.value;
-			this.modifyjob = this.$refs.jobVal.value;
-			this.modifyaddr = this.$refs.addrVal.value;
-			this.modifydate = this.$refs.dataVal.value;
+			
 			if (this.isReadOnly) {
 				return; // 이미 리드온리 상태이면 아무 것도 하지 않음
 			}
@@ -301,8 +303,7 @@ export default {
 				alert("변경된 내용이 없습니다.");
 				this.isReadOnly = true;
 				return false;
-			}
-			if(this.flagValue) {
+			} else {
 				this.selectedCustomer.cus_name = nameVal.value;
 				this.selectedCustomer.jumin_id = juminVal.value;
 				this.selectedCustomer.email = emailVal.value;
@@ -311,10 +312,10 @@ export default {
 				this.selectedCustomer.job = jobVal.value;
 				this.selectedCustomer.addr = addrVal.value;
 
-                // const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
-                // if (index !== -1) {
-                //     this.customerData[index] = { ...this.selectedCustomer };
-                // }
+				const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
+				if (index !== -1) {
+					this.customerData[index] = { ...this.selectedCustomer };
+				}
 				this.isReadOnly = true;
 				alert('변경 사항이 저장되었습니다.');
 			}
@@ -322,24 +323,6 @@ export default {
 			this.selectedCustomer.create_date = this.formatdate(new Date());
             // 고객 데이터 업데이트
             this.updateCustomer();
-			return true; // 예시로 항상 true를 반환합니다.
-
-			// 변경 사항 저장
-			// const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
-			// if (index !== -1) {
-			// 	this.customerData[index] = { ...this.selectedCustomer };
-			// }
-
-			// this.isReadOnly = true; // 다시 리드온리 상태로 변경
-			// alert('변경 사항이 저장되었습니다.');
-		},
-		modify() {
-			// this.originalCustomer = { ...this.selectedCustomer };
-			this.$nextTick(() => {
-			// 포커스를 '고객명' 필드로 이동
-			this.$refs.nameVal.focus();
-		});
-			this.isReadOnly = false; // 입력 필드를 수정 가능하도록 변경
 		},
 		updateCustomer() { //고객 업데이트 처리
 			if(this.selectedCustomerId) {
