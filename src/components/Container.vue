@@ -43,7 +43,7 @@
 						<input type="text" :value="selectedCustomer.addr" ref="addrVal" :readonly="isReadOnly">
 					</form>
 				</div>
-				<div class="manager_box" v-show="!isReadOnly">
+				<div class="manager_box">
 					<form action="">
 						<label for=""> 관리 담당자 : </label>
 						<input type="text" :value="selectedManager ? selectedManager.m_name:''" ref="managerNameVal" :readonly="isReadOnly">
@@ -128,12 +128,17 @@ export default {
 		const maxId = this.customerData.reduce((max, customer) => Math.max(max, customer.cus_id), 0);
 		return maxId + 1;
 		},
+		mounted() {
+			// 컴포넌트가 마운트된 후 초기화 작업 수행
+			this.updateManagerInfo();
+		},
 		updateManagerInfo() {
-			//선택된 고객의 관리자 업데이트
-			if(this.selectedCustomer) {
-				this.selectedManager = this.managerData.find(
-					manager => manager.m_id === this.selectedCustomer.m_id
-				);
+			// 선택된 고객의 관리자 업데이트
+			if (this.selectedCustomerId) {
+				const customer = this.customerData.find(customer => customer.cus_id === this.selectedCustomerId);
+				if (customer) {
+					this.selectedManager = this.managerData.find(manager => manager.m_id === customer.m_id);
+				}
 			}
 		},
 		showNewCustomerModal() { //신규 고객 모달을 열고 새로운 고객 데이터 초기화
