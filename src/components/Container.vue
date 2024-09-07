@@ -26,21 +26,21 @@
 				<div class="customer_box">
 					<form action="" v-if="selectedCustomer">
 						<label for="">**작성일자 : </label>
-						<input type="text" :value="selectedCustomer.create_date" disabled />
+						<input type="text" :value="selectedCustomer.create_date" ref="dataVal" disabled/>
 						<label for="">*고객명 : </label>
-						<input type="text" v-model="selectedCustomer.cus_name" ref="nameVal" :readonly="isReadOnly" required>
+						<input type="text" :value="selectedCustomer.cus_name" ref="nameVal" :readonly="isReadOnly" required>
 						<label for="">*실명번호 : </label>
-						<input type="text" v-model="selectedCustomer.jumin_id" ref="juminVal" :readonly="isReadOnly" required>
+						<input type="text" :value="selectedCustomer.jumin_id" ref="juminVal" :readonly="isReadOnly" required>
 						<label for="">*E-mail : </label>
-						<input type="email" v-model="selectedCustomer.email" ref="emailVal" :readonly="isReadOnly" required>
+						<input type="email" :value="selectedCustomer.email" ref="emailVal" :readonly="isReadOnly" required>
 						<label for="">전화번호 : </label>
-						<input type="text" v-model="selectedCustomer.tel" ref="telVal" :readonly="isReadOnly">
+						<input type="text" :value="selectedCustomer.tel" ref="telVal" :readonly="isReadOnly">
 						<label for="">*핸드폰 번호 : </label>
-						<input type="text" v-model="selectedCustomer.phone" ref="phoneVal" :readonly="isReadOnly" required>
+						<input type="text" :value="selectedCustomer.phone" ref="phoneVal" :readonly="isReadOnly" required>
 						<label for="">*직 업 : </label>
-						<input type="text" v-model="selectedCustomer.job" ref="jobVal" :readonly="isReadOnly" required>
+						<input type="text" :value="selectedCustomer.job" ref="jobVal" :readonly="isReadOnly" required>
 						<label for="">주 소 : </label>
-						<input type="text" v-model="selectedCustomer.addr" ref="addrVal" :readonly="isReadOnly">
+						<input type="text" :value="selectedCustomer.addr" ref="addrVal" :readonly="isReadOnly">
 					</form>
 				</div>
 				<div class="manager_box">
@@ -249,7 +249,7 @@ export default {
 			// 예: 이메일 형식 검사, 필수 입력 확인 등
 			this.errors = {name: false, jumin: false, email: false, tel: false, phone: false, job: false}; //오류 초기화
 			const { nameVal, juminVal, emailVal, telVal, phoneVal, jobVal, addrVal } = this.$refs;
-			
+
 			//한글이 포함되어 있는지 검사하는 정규 표현식
 			const emailPattern = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 			//숫자가 포함되어 있는지 검사하는 정규 표현식
@@ -312,23 +312,23 @@ export default {
 				this.isReadOnly = true;
 				return false;
 			}
-			this.selectedCustomer.cus_name = nameVal.value;
-			this.selectedCustomer.jumin_id = juminVal.value;
-			this.selectedCustomer.email = emailVal.value;
-			this.selectedCustomer.tel = telVal.value;
-			this.selectedCustomer.phone = phoneVal.value;
-			this.selectedCustomer.job = jobVal.value;
-			this.selectedCustomer.addr = addrVal.value;
-			// if(this.flagValue) {
+			if(this.isValid) {
+				this.selectedCustomer.cus_name = nameVal.value;
+				this.selectedCustomer.jumin_id = juminVal.value;
+				this.selectedCustomer.email = emailVal.value;
+				this.selectedCustomer.tel = telVal.value;
+				this.selectedCustomer.phone = phoneVal.value;
+				this.selectedCustomer.job = jobVal.value;
+				this.selectedCustomer.addr = addrVal.value;
 
-            //     const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
-            //     if (index !== -1) {
-            //         this.customerData[index] = { ...this.selectedCustomer };
-            //     }
+                const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
+                if (index !== -1) {
+                    this.customerData[index] = { ...this.selectedCustomer };
+                }
 
-			// 	this.isReadOnly = true;
-			// 	alert("등록되었습니다.");
-			// }
+				this.isReadOnly = true;
+				alert("등록되었습니다.");
+			}
 			// 오늘 날짜를 'YYYY-MM-DD' 형식으로 설정
 			this.selectedCustomer.create_date = this.formatdate(new Date());
             // 고객 데이터 업데이트
@@ -336,7 +336,11 @@ export default {
 			return true; // 예시로 항상 true를 반환합니다.
 		},
 		modify() {
-			this.originalCustomer = { ...this.selectedCustomer };
+			// this.originalCustomer = { ...this.selectedCustomer };
+			this.$nextTick(() => {
+			// 포커스를 '고객명' 필드로 이동
+			this.$refs.nameVal.focus();
+		});
 			this.isReadOnly = false; // 입력 필드를 수정 가능하도록 변경
 		},
 		updateCustomer() { //고객 업데이트 처리
