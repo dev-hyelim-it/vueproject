@@ -1,0 +1,167 @@
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	box-sizing: border-box;
+}
+
+.container {
+	display: flex;
+	justify-content: space-around;
+	margin: 0;
+	width: 100%;
+	background: #f5f5f5;
+}
+
+.contents_box {
+	display: flex;
+	flex-wrap: wrap;
+	width: calc(50% - 15px);
+}
+
+.contents_box > div {
+	padding: 5px;
+}
+
+.contents_box h2 {
+	height: 30px;
+	font-size: 20px;
+}
+
+.l_box {
+	width: 40%;
+}
+
+.l_box > input {
+	width: 100%;
+	height: 28px;
+}
+
+.btn {
+	color: white;
+	background: rgb(129, 164, 230);
+	border: 1px solid #333;
+}
+
+.btn_name {
+	margin: 5px 0 0;
+	width: 100%;
+}
+
+.name_box {
+	display: flex;
+	flex-direction: column;
+    padding: 5px 10px;
+	margin-top: 10px;
+	height: calc(100% - 110px);
+	max-height: 385px;
+	background: white;
+    border: 1px solid #ccc;
+    overflow-y: scroll;
+}
+
+.name_box::-webkit-scrollbar {
+	display: none;
+}
+
+.name_box label {
+	padding: 5px 0;
+	height: 30px;
+}
+
+.name_box label input {
+	margin-right: 5px;
+}
+
+.r_box {
+	width: 60%;
+}
+
+.r_box form {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 5px;
+	border: 1px solid #ccc;
+}
+
+.r_box form label {
+	width: 110px;
+	text-align: right;
+}
+
+.r_box form input {
+	margin: 0 0 10px 3px;
+	width: calc(100% - 113px);
+	height: 28px;
+}
+
+.customer_box form input:last-child {
+	margin-bottom: 3px;
+	height: 55px;
+}
+
+.manager_box {
+	position: relative;
+	margin-top: 5px;
+}
+
+.man_input {
+	position: relative;
+}
+
+.search_btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 19px;
+	height: 20px;
+	line-height: 10px;
+	font-size: 16px;
+}
+
+.notice_box {
+	font-weight: bold;
+	position: relative;
+	width: 100%;
+	height: 30px;
+}
+
+.notice {
+	position: absolute;
+	right: 8px;
+	bottom: 4px;
+	color: blue;
+}
+
+.consultation_box {
+	width: 100%;
+	height: calc(100% - 125px);
+	max-height: 420px;
+	border: 1px solid #333;
+	overflow-y: scroll;
+}
+
+.consultation_box p {
+	margin-bottom: 10px;
+}
+
+.contents_box .btn_box {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-content: space-between;
+	padding: 0;
+	margin: 10px 0 0;
+	width: 100%;
+	height: 70px;
+}
+
+.btn_box button {
+	width: calc(25% - 5px);
+	height: 30px;
+}
+
+.btn_inquiry {
+	color: #333;
+	background-color: rgb(255, 235, 235);
+}
