@@ -223,32 +223,21 @@ export default {
 		},
 		registration(event) {
 			event.preventDefault();
-			if (this.isReadOnly) {
-				return; // 이미 리드온리 상태이면 아무 것도 하지 않음
-			}
-
-			// 유효성 검사
-			const isValid = this.validateFormData();
-			if (!isValid) {
-				alert('유효성 검사를 통과하지 못했습니다.');
-				return;
-			}
-
-			// 변경 사항 저장
-			const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
-			if (index !== -1) {
-				this.customerData[index] = { ...this.selectedCustomer };
-			}
-
-			this.isReadOnly = true; // 다시 리드온리 상태로 변경
-			alert('변경 사항이 저장되었습니다.');
-		},
-
-		validateFormData() {
 			// 유효성 검사 로직을 여기에 추가합니다.
 			// 예: 이메일 형식 검사, 필수 입력 확인 등
 			this.errors = {name: false, jumin: false, email: false, tel: false, phone: false, job: false}; //오류 초기화
 			const { nameVal, juminVal, emailVal, telVal, phoneVal, jobVal, addrVal } = this.$refs;
+			this.modifyName = this.$refs.nameVal.value;
+			this.modifyJumin = this.$refs.juminVal.value;
+			this.modifyemail = this.$refs.emailVal.value;
+			this.modifytel = this.$refs.telVal.value;
+			this.modifyphone = this.$refs.phoneVal.value;
+			this.modifyjob = this.$refs.jobVal.value;
+			this.modifyaddr = this.$refs.addrVal.value;
+			this.modifydate = this.$refs.dataVal.value;
+			if (this.isReadOnly) {
+				return; // 이미 리드온리 상태이면 아무 것도 하지 않음
+			}
 
 			//한글이 포함되어 있는지 검사하는 정규 표현식
 			const emailPattern = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -298,6 +287,7 @@ export default {
 				}
 				return false;
 			}
+
 			const isContentChanged =
 				nameVal.value !== this.originalCustomer.cus_name ||
 				juminVal.value !== this.originalCustomer.jumin_id ||
@@ -312,7 +302,7 @@ export default {
 				this.isReadOnly = true;
 				return false;
 			}
-			if(this.isValid) {
+			if(this.flagValue) {
 				this.selectedCustomer.cus_name = nameVal.value;
 				this.selectedCustomer.jumin_id = juminVal.value;
 				this.selectedCustomer.email = emailVal.value;
@@ -321,19 +311,27 @@ export default {
 				this.selectedCustomer.job = jobVal.value;
 				this.selectedCustomer.addr = addrVal.value;
 
-                const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
-                if (index !== -1) {
-                    this.customerData[index] = { ...this.selectedCustomer };
-                }
-
+                // const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
+                // if (index !== -1) {
+                //     this.customerData[index] = { ...this.selectedCustomer };
+                // }
 				this.isReadOnly = true;
-				alert("등록되었습니다.");
+				alert('변경 사항이 저장되었습니다.');
 			}
 			// 오늘 날짜를 'YYYY-MM-DD' 형식으로 설정
 			this.selectedCustomer.create_date = this.formatdate(new Date());
             // 고객 데이터 업데이트
             this.updateCustomer();
 			return true; // 예시로 항상 true를 반환합니다.
+
+			// 변경 사항 저장
+			// const index = this.customerData.findIndex(customer => customer.cus_id === this.selectedCustomerId);
+			// if (index !== -1) {
+			// 	this.customerData[index] = { ...this.selectedCustomer };
+			// }
+
+			// this.isReadOnly = true; // 다시 리드온리 상태로 변경
+			// alert('변경 사항이 저장되었습니다.');
 		},
 		modify() {
 			// this.originalCustomer = { ...this.selectedCustomer };
