@@ -119,6 +119,10 @@ export default {
 			originalCustomer: null // 원래 고객 정보를 저장할 변수
 		}
 	},
+	mounted() {
+		// 컴포넌트가 마운트된 후 초기화 작업 수행
+		this.updateManagerInfo();
+	},
 	methods :{
 		logout() {
 			this.$emit('logout');
@@ -127,10 +131,6 @@ export default {
 		//현재 고객 데이터에서 가장 큰 고객 ID를 찾아서 다음 ID 생성
 		const maxId = this.customerData.reduce((max, customer) => Math.max(max, customer.cus_id), 0);
 		return maxId + 1;
-		},
-		mounted() {
-			// 컴포넌트가 마운트된 후 초기화 작업 수행
-			this.updateManagerInfo();
 		},
 		updateManagerInfo() {
 			// 선택된 고객의 관리자 업데이트
@@ -352,8 +352,8 @@ export default {
 		},
 		filteredCounsel() {
 			return this.counselData.filter(entry => entry.cus_id === (this.selectedCustomer ? this.selectedCustomer.cus_id : null));
-		},
-	},
+		}
+  },
 	components : {
 		NewCustomer,
 		DeleteConfirmationModal,
